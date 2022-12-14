@@ -44,4 +44,6 @@ public class UserDto {
 
     @NotNull @Schema(example = "09063777946")
     private String phoneNumber;
+
+    private String n;
 }

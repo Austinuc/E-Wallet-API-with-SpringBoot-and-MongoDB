@@ -47,27 +47,27 @@ public class WalletAppApplication {
     }
 
 
-    @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            userRepository.save(
-                    User.builder()
-                            .firstName("Admin")
-                            .lastName("Igboke")
-                            .email("austin5astro@gmail.com")
-                            .userName("AustinUc")
-                            .roles(Roles.ADMIN.name())
-                            .password(passwordEncoder.encode("password123"))
-                            .build());
-            userRepository.save(
-                    User.builder()
-                            .firstName("User")
-                            .lastName("Igboke")
-                            .email("augustineigboke@gmail.com")
-                            .userName("Uche")
-                            .roles(Roles.USER.name())
-                            .password(passwordEncoder.encode("password"))
-                            .build());
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+//        return args -> {
+//            userRepository.save(
+//                    User.builder()
+//                            .firstName("Admin")
+//                            .lastName("Igboke")
+//                            .email("austin5astro@gmail.com")
+//                            .userName("AustinUc")
+//                            .roles(Roles.ADMIN.name())
+//                            .password(passwordEncoder.encode("password123"))
+//                            .build());
+//            userRepository.save(
+//                    User.builder()
+//                            .firstName("User")
+//                            .lastName("Igboke")
+//                            .email("augustineigboke@gmail.com")
+//                            .userName("Uche")
+//                            .roles(Roles.USER.name())
+//                            .password(passwordEncoder.encode("password"))
+//                            .build());
+//        };
+//    }
 }

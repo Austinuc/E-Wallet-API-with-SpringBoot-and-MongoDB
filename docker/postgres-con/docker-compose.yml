@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: test_db
+      POSTGRES_DB: myWalletDb
     ports:
       - "5435:5432"
   pgadmin:
