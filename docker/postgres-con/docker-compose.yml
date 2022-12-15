@@ -19,3 +19,5 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+  server:
+    container_name: wallet_server
