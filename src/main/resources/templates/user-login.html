@@ -12,7 +12,12 @@
 </head>
 <body >
 <div class="container">
+  <div th:if="${param.error}">
+    Invalid username and password.</div>
+  <div th:if="${param.logout}">
+    You have been logged out.</div>
   <form class="form-signin" method="post" action="/login">
+
     <h2 class="form-signin-heading">Sign in to your account</h2>
     <p>
       <label for="username" class="sr-only">Username</label>

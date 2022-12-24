@@ -1,11 +1,8 @@
 package com.austin.walletapp.models;
 
+import com.austin.walletapp.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,39 +13,35 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-
-@Document("account")
-@Data
+@Document("wallet")
+@Getter
+@Setter
 @Builder
+//@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account implements Serializable {
-
+public class Wallet implements Serializable {
     private static final long serialVersionUID = 2L;
 
     @Id
     private String id;
     @Indexed(unique = true)
-    private String accountUUID;
+    private String walletUUID;
 
     @Indexed(unique = true)
     private String userUUID;
 
-    @Column(name = "account_name", nullable = false)
-    private String accountName;
+    @Column(nullable = false)
+    private BigDecimal balance;
 
-    @Column(name = "account_number", nullable = false)
-    private String accountNumber;
-
-    @Column(name = "bank_name", nullable = false)
-    private String bankName;
+    private Status status;
 
     @CreatedDate
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

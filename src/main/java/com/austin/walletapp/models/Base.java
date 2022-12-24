@@ -1,29 +1,34 @@
 package com.austin.walletapp.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.util.Date;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-@MappedSuperclass
-public abstract class Base {
+@AllArgsConstructor
+public class Base {
+    @CreatedDate
+    private Date createdDate;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long Id;
+    @LastModifiedDate
+    private Date updatedDate;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    Base(){
+        this.createdDate= new Date();
+        this.updatedDate = new Date();
+    }
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    @PrePersist
+    private void setCreatedAt() {
+        createdDate = new Date();
+    }
+    @PreUpdate
+    private void setUpdatedAt() {
+        updatedDate = new Date();
+    }
 }

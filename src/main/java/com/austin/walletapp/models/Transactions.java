@@ -1,27 +1,38 @@
 package com.austin.walletapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
+@Document("transaction")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_transactions")
-public class Transactions extends Base {
+public class Transactions implements Serializable {
 
-    @Column(name = "transaction_uuid", columnDefinition = "VARCHAR(36)")
-    @Type(type = "uuid-char")
-    private UUID transactionUuid;
+    private static final long serialVersionUID = 2L;
+
+    @Id
+    private String id;
+    @Indexed(unique = true)
+    private String uuid;
 
     @Column(nullable = false)
     private String transactionType;
@@ -29,8 +40,14 @@ public class Transactions extends Base {
     @Column(nullable = false)
     private String transactionStatus;
 
-    private String transactionStatusMessage;
+    private String transactionMessage;
 
     @Column(nullable = false)
-    private double transactionAmount;
+    private BigDecimal transactionAmount;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

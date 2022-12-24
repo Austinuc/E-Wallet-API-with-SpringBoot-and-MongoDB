@@ -1,11 +1,8 @@
 package com.austin.walletapp.models;
 
-import com.austin.walletapp.repositories.UserRepository;
-//import com.austin.walletapp.security.PasswordConfig;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,7 +15,7 @@ public class SecurityUser implements UserDetails {
     }
 
     public String getEmail() {return user.getEmail();}
-    public Long getUserId() {return user.getId();}
+    public String getUserId() {return user.getId();}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -35,7 +32,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getEmail();
     }
 
     @Override

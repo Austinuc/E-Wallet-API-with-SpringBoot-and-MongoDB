@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class WalletAppApplication {
-    private static final String SCHEME_NAME = "basicAuth";
+    private static final String SCHEME_NAME = "Authorization";
     private static final String SCHEME = "basic";
 
     public static void main(String[] args) {
@@ -42,8 +42,8 @@ public class WalletAppApplication {
     private SecurityScheme createSecurityScheme() {
         return new SecurityScheme()
                 .name(SCHEME_NAME)
-                .type(SecurityScheme.Type.HTTP)
-                .scheme(SCHEME);
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.HEADER);
     }
 
 

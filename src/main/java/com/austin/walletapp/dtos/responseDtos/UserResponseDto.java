@@ -1,17 +1,31 @@
 package com.austin.walletapp.dtos.responseDtos;
 
-import javax.persistence.Column;
-import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Data
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserResponseDto {
 
-    private UUID userUuid;
+    private String uuid;
 
     private String firstName;
 
     private String lastName;
 
-    private String userName;
+    private String walletUUId;
+
+    private Date lastLoginDate;
 
     private String email;
 
@@ -22,4 +36,5 @@ public class UserResponseDto {
     private String homeAddress;
 
     private String phoneNumber;
+    private String token;
 }
