@@ -16,35 +16,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class WalletAppApplication {
-    private static final String SCHEME_NAME = "Authorization";
-    private static final String SCHEME = "basic";
 
     public static void main(String[] args) {
         SpringApplication.run(WalletAppApplication.class, args);
     }
 
-
     @Bean
-    public OpenAPI springIwalletOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("iWallet API")
-                        .description("iWallet API Documentation")
-                        .version("v0.0.1")
-                        .license(new License().name("Apache 2.0").url("https://springdoc.org")))
-                .components(new Components()
-                        .addSecuritySchemes(SCHEME_NAME, createSecurityScheme()))
-                .addSecurityItem(new SecurityRequirement().addList(SCHEME_NAME));
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
 
-    private SecurityScheme createSecurityScheme() {
-        return new SecurityScheme()
-                .name(SCHEME_NAME)
-                .type(SecurityScheme.Type.APIKEY)
-                .in(SecurityScheme.In.HEADER);
-    }
 
 
 //    @Bean

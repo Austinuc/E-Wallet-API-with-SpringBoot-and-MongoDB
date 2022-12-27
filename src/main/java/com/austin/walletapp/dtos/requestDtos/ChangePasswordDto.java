@@ -16,6 +16,6 @@ public class ChangePasswordDto {
     private String email;
     @NotBlank(message = "password must be provided")
     private String password;
-    @NotBlank(message = "verification token must be provided")
+//    @NotBlank(message = "verification token must be provided")
     private String verificationToken;
 }

@@ -1,6 +1,7 @@
 package com.austin.walletapp.security;
 
 import com.austin.walletapp.utils.LocalMemStorage;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -36,7 +33,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 String token = authorizationHeader.replace("Bearer", "").replace("\\s", "");
                 logger.info("The token is " + token);
 
+
                 username = jwtUtil.extractUsername(token);
+
                 logger.info(username);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = detailsService.loadUserByUsername(username);
@@ -52,8 +51,8 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
 
-        }catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
     }

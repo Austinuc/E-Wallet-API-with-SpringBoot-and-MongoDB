@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -70,8 +72,7 @@ public class UserServicesImpl implements UserServices {
         Wallet newWallet = Wallet.builder()
                 .walletUUID(app.generateSerialNumber("0"))
                 .balance(BigDecimal.ZERO)
-                .userUUID(newUser.getUuid())
-                .status(Status.INACTIVE)
+                .email(newUser.getEmail())
                 .build();
 
 
@@ -175,6 +176,16 @@ public class UserServicesImpl implements UserServices {
         userToResetPassword.setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
         userRepository.save(userToResetPassword);
 
+        MailDto mailDto = MailDto.builder()
+                .to(userToResetPassword.getEmail())
+                .subject("PASSWORD RESET SUCCESSFUL")
+                .message(String.format("Hi %s, \n You have successfully reset your password. Kindly login with your new password. " +
+                        "\n If you did not authorize this, kindly create a ticket from our complaint section on the app", userToResetPassword.getFirstName()))
+                .build();
+
+        mailSender.sendEmail(mailDto);
+        logger.info("Confirmation email sent to  {}", userToResetPassword.getEmail());
+
         return "password reset successful";
     }
 
@@ -185,6 +196,24 @@ public class UserServicesImpl implements UserServices {
         }
         blacklistToken(headerToken);
         return "Logout successful";
+    }
+
+    @Override
+    public UserResponseDto updatePassword(ChangePasswordDto changePasswordDto) {
+
+        if (jwtUtil.isTokenExpired(changePasswordDto.getVerificationToken()))
+            throw new ValidationException("Request token has expired");
+
+        blacklistToken(changePasswordDto.getVerificationToken());
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String newToken = jwtUtil.generateToken(userDetails);
+
+        UserResponseDto userResponseDto = app.getMapper().convertValue(userRepository.findByEmail(changePasswordDto.getEmail())
+                .orElseThrow(() -> new AuthenticationException("User does not exist")), UserResponseDto.class);
+        userResponseDto.setToken(newToken);
+
+        return userResponseDto;
     }
 
     public void validateToken(String memCachedKey, String token) {

@@ -20,4 +20,6 @@ public interface UserServices {
     String resetPassword(ChangePasswordDto changePasswordDto);
 
     String logout(String token);
+
+    UserResponseDto updatePassword(ChangePasswordDto changePasswordDto);
 }

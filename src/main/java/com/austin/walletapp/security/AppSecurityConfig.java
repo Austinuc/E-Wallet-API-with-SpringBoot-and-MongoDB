@@ -1,8 +1,12 @@
 package com.austin.walletapp.security;
 
+import com.austin.walletapp.exceptions.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -22,18 +27,24 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 
 
+@Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class AppSecurityConfig {
+
+    @Autowired
+    @Qualifier("customAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
     private final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
             "/v3/api-docs/**",  "/configuration/**",   "/swagger*/**",
             "/swagger-ui/**",  "/webjars/**"
     };
 
-    private final CustomUserDetailsServices customUserDetailsServices;
+    @Autowired
+    private CustomUserDetailsServices customUserDetailsServices;
 
-    private final JwtFilter jwtFilter;
+    @Autowired
+    private JwtFilter jwtFilter;
 
 
     @Bean
@@ -44,7 +55,7 @@ public class AppSecurityConfig {
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
-                .and().exceptionHandling()
+                .and().exceptionHandling().authenticationEntryPoint(authEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

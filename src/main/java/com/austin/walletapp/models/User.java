@@ -1,34 +1,23 @@
 package com.austin.walletapp.models;
 
-import com.austin.walletapp.enums.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-//import org.hibernate.annotations.Type;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
 @Document("users")
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @AllArgsConstructor
 public class User extends Base implements Serializable {
 
     private static final long serialVersionUID = 2L;
-
-    @Id
-    private String id;
 
     @Indexed(unique = true)
     private String uuid;
@@ -68,7 +57,7 @@ public class User extends Base implements Serializable {
     @Column(length = 15)
     private String phoneNumber;
 
-    User(){
+    public User(){
         super();
     }
 
