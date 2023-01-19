@@ -88,12 +88,12 @@ public class AppSecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
-//        corsConfiguration.addAllowedOrigin("https://facebook.com");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","PUT","POST","UPDATE","DELETE"));
         corsConfiguration.setMaxAge(3600L);
         source.registerCorsConfiguration("/**", corsConfiguration); // Global for all paths
 
-        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
