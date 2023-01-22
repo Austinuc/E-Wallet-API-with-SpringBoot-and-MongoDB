@@ -45,9 +45,6 @@ public class PaymentServicesImpl implements PaymentServices {
     private RestTemplate restTemplate;
     @Value("${paystack.secretkey}")
     private String apiKey;
-    @Value("${paystack.initiateurl}")
-    private String url;
-
     @Autowired
     private WalletServices walletService;
     @Autowired
@@ -78,6 +75,7 @@ public class PaymentServicesImpl implements PaymentServices {
 
     @Override
     public ApiResponse getPaymentLink(InitiateTransactionDto transactionDto) {
+        String url = "https://api.paystack.co/transaction/initialize";
         transactionDto.setAmount(transactionDto.getAmount()+"00");
         //Set authorization header for querying Paystack's end points
         HttpHeaders headers = new HttpHeaders();
