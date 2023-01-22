@@ -67,18 +67,6 @@ public class UserServicesImpl implements UserServices {
         newUser.setRoles(Roles.USER.name());
         newUser.setStatus(Status.INACTIVE.name());
 
-
-        logger.info("Setting up wallet for new user: {}",newUser.getEmail());
-        Wallet newWallet = Wallet.builder()
-                .walletUUID(app.generateSerialNumber("0"))
-                .balance(BigDecimal.ZERO)
-                .email(newUser.getEmail())
-                .build();
-
-
-        walletRepository.save(newWallet);
-
-        newUser.setWalletUUId(newWallet.getWalletUUID());
         newUser = userRepository.save(newUser);
         logger.info("new user registered. email: {}",newUser.getEmail());
 
@@ -116,6 +104,17 @@ public class UserServicesImpl implements UserServices {
 
         userToActivate.setStatus(Status.ACTIVE.name());
         UserResponseDto userResponseDto = app.getMapper().convertValue(userRepository.save(userToActivate), UserResponseDto.class);
+
+        logger.info("Setting up wallet for new user: {}",activateUserDto.getEmail());
+        Wallet newWallet = Wallet.builder()
+                .walletUUID(app.generateSerialNumber("0"))
+                .balance(BigDecimal.ZERO)
+                .email(activateUserDto.getEmail())
+                .build();
+
+        walletRepository.save(newWallet);
+
+        logger.info("Wallet created successfully for user: {}",activateUserDto.getEmail());
 
         MailDto mailDto = MailDto.builder()
                 .to(userToActivate.getEmail())

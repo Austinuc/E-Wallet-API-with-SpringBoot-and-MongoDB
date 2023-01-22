@@ -16,7 +16,7 @@ public class SwaggerConfig {
     public OpenAPI springIwalletOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("iWallet API Documentation")
-                        .description("Usage: on successful login, a JWT is returned. Copy the token and click the " +
+                        .description("<b>Usage:</b> on successful login, a JWT is returned. Copy the token and click the " +
                                 "'Authorize' button with a lock icon located at the top right corner before the end points." +
                                 "Paste the generated token prepending 'Bearer ' to it.\n" +
                                 "Eg: if the token is 'xyztt3637bjsjsj', it should be this before you authorize it 'Bearer xyztt3637bjsjsj. " +

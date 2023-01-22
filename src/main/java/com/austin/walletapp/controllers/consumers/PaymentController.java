@@ -6,6 +6,7 @@ import com.austin.walletapp.dtos.responseDtos.TransactionResponseDto;
 import com.austin.walletapp.services.PaymentServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/payment")
+@Tag(name = "Payment Endpoint", description = "<h3>To deposit: </h3> " +
+        "<ol>" +
+        "<li>Go to '/deposit/initiate' endpoint and enter your details. The <b>callback</b> and <b>metadata</b> are optional. just leave them the way they are</li> " +
+        "<li>Copy the payment link returned in the response object to any browser to make your payment.</li>" +
+        "<li>Copy the reference code returned if it was successful and go to '/verify/{payment_reference}' endpoint to verify if your deposit was successful</li>" +
+        "</ol> " +
+        "<h3> For withdrawal which is implemented as transfer:</h3> " +
+        "<ol> " +
+        "<li>Go to 'withdrawal/create-transfer-recipient' endpoint to create you Transfer recipient</li> " +
+        "<li>Copy the <b>reference</b> code 'TRF_....' and the <b>recipient</b> code 'RCP_....' generated and got to initiate withdrawal endpoint</li> " +
+        "<li>After initiating your withdrawal, you will receive a error code response because the payment was a test payment</li>" +
+        "</ol> " +
+        "<p>You can use the <b>validate-account-details</b> endpoint to validate your account details and the " +
+        "<b>banks</b> endpoint to see all available banks</p>")
 public class PaymentController {
     @Autowired
     private PaymentServices paymentServices;
@@ -62,14 +77,14 @@ public class PaymentController {
     }
 
     @Operation(summary = "Before sending money to an account, you need to create a transfer recipient with the customer’s account details.")
-    @PostMapping("/transfer/create-transfer-recipient")
+    @PostMapping("/withdrawal/create-transfer-recipient")
     public ResponseEntity<ApiResponse<FundTransferDto>> createTransferRecipient(@RequestBody AccountDto accountDto) {
 
         return ResponseEntity.ok(paymentServices.createTransferRecipient(accountDto));
     }
 
     @Operation(summary = "Initiate the transfer")
-    @PostMapping("/transfer/initiate")
+    @PostMapping("/withdrawal/initiate")
     public ResponseEntity<ApiResponse<TransactionResponseDto>> initiateTransfer(@RequestBody FundTransferDto fundTransferDto) {
 
         return ResponseEntity.ok(paymentServices.initiateTransfer(fundTransferDto));

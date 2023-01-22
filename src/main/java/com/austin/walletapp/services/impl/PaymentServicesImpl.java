@@ -43,9 +43,9 @@ public class PaymentServicesImpl implements PaymentServices {
     private WalletRepository walletRepository;
     @Autowired
     private RestTemplate restTemplate;
-    @Value("${payment.secret_key}")
+    @Value("${paystack.secretkey}")
     private String apiKey;
-    @Value("${payment.initiate_url}")
+    @Value("${paystack.initiateurl}")
     private String url;
 
     @Autowired

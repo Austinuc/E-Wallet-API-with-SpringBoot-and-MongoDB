@@ -15,7 +15,14 @@ on:
     branches: [ "master" ]
 env:
   APP_DB: deploy
-
+  spring:
+    mail:
+      username: ${{ secrets.SPRING_MAIL_USERNAME }}
+      password: ${{ secrets.SPRING_MAIL_PASSWORD }}
+  paystack:
+    secretkey: ${{ secrets.PAYSTACK_SECRET_KEY }}
+  app:
+    jwtsecret: ${{ secrets.APP_JWT_SECRET }}
 jobs:
   build:
 

@@ -3,6 +3,7 @@ package com.austin.walletapp.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Document("users")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
@@ -33,9 +35,6 @@ public class User extends Base implements Serializable {
 
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false, length = 20)
-    private String walletUUId;
 
     private Date lastLoginDate;
 

@@ -1,23 +1,49 @@
-version: '3.8'
+version: "3.1"
 services:
-  db:
-    container_name: pg_container
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: myWalletDb
-    ports:
-      - "5435:5432"
-  pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "5050:80"
   server:
-    container_name: wallet_server
+    container_name: appserver
+    image: austinuc/fashion-blog
+    environment:
+      APP_DB: deploy
+      SPRING_MAIL_USERNAME: tobiajayi119@gmail.com
+      SPRING_MAIL_PASSWORD: pjwfdhxcngkcadgi
+      PAYMENT_SECRETKEY: sk_test_0eee2028ee0d9b5f3fe44b2fb46b96088cbf3af0
+      APP_JWTSECRET: EWalletSecretKey
+    ports:
+      - "8083:8083"
+    restart: always
+    depends_on:
+      - mongodb_container
+      - memchached
+
+  mongodb_container:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_DATABASE: walletDB
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo:27017/
+
+  memchached:
+    image: memcached:latest-alpine
+    restart: always
+
+volumes:
+  mongodb_data_container:
+
+networks:
+  default:

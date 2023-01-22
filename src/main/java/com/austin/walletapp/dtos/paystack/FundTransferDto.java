@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class FundTransferDto {
 
-    @Schema(example = "unique reference number, in this case, we are using the logged transaction UUID")
+    @Schema(example = "TRF_1a25w1h3n0xctjg")
     private String reference;
     @NotBlank
     @Schema(example = "austin5astro@gmail.com")

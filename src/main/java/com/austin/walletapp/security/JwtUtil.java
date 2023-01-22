@@ -22,7 +22,7 @@ public class JwtUtil {
     private final LocalMemStorage memStorage;
     private final UserRepository userRepository;
 
-    @Value("${app.jwt_secret}")
+    @Value("${app.jwtsecret}")
     private String SECRET_KEY;
 
     public String extractUsername(String token) {
