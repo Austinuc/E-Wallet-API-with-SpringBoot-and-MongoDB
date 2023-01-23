@@ -37,6 +37,14 @@ public class GlobalExceptionHandler {
         return  new ApiResponse<>("Error: "+ex.getMessage(), false,null);
     }
 
+    @ExceptionHandler(MailSendingException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ApiResponse<String> handleMailSendingException(MailSendingException ex){
+        logger.error(ex.getMessage());
+        return  new ApiResponse<>("Error: "+ex.getMessage(), false,null);
+    }
+
     @ExceptionHandler(InvalidTransactionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

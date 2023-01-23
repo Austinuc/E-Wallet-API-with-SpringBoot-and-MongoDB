@@ -2,10 +2,12 @@ package com.austin.walletapp.services.impl;
 
 import com.austin.walletapp.dtos.requestDtos.MailDto;
 import com.austin.walletapp.dtos.responseDtos.ApiResponse;
+import com.austin.walletapp.exceptions.MailSendingException;
 import com.austin.walletapp.services.EmailServices;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,12 @@ public class EmailServicesImpl implements EmailServices {
         simpleMailMessage.setSubject(mailDto.getSubject());
         simpleMailMessage.setText(mailDto.getMessage());
 
-        mailSender.send(simpleMailMessage);
+        try {
+            mailSender.send(simpleMailMessage);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new MailSendingException(ex.getMessage());
+        }
 
         logger.info("Email sent successfully to {}",mailDto.getTo());
 

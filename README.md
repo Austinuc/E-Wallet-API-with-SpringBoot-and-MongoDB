@@ -15,9 +15,12 @@ containerized with Docker, deployed on an AWS EC2 instance.`
     Build system: Maven
     JDK version: 11
     Spring boot version: 2.76
+    Memcached
     MongoDB
 
 ### Installation
+
+* Ensure Memcached is installed and running on your machine before you run this service.
 * **Clone the repository:** git clone https://github.com/Austinuc/E-Wallet-API-with-SpringBoot-and-MongoDB.git
 * **Build the project using maven:** mvn clean install 
 * **Run the application:** mvn spring-boot:run 

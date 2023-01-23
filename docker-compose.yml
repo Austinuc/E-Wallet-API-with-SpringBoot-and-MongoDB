@@ -1,0 +1,53 @@
+version: "3.1"
+services:
+  server:
+    container_name: appserver
+    image: austinuc/e-wallet-image
+    environment:
+      APP_DB: deploy
+      SPRING_DATA_MONGODB_URI: mongodb://root:password@mongodb_container:27017/?authSource=admin&authMechanism=SCRAM-SHA-1
+      SPRING_DATA_MONGODB_DATABASE: walletDB
+      MEMCACHED_SERVICE_HOST: memchached
+      SPRING_MAIL_USERNAME: tobiajayi119@gmail.com #change the gmail sender here
+      SPRING_MAIL_PASSWORD: pjwfdhxcngkcadgi #enter the password for the gmail sender
+      PAYSTACK_SECRETKEY: sk_test_0ee... #Enter your Paystack secrete key here
+      APP_JWTSECRET: EWalletSecretKey #You can change this to anything you want
+    ports:
+      - "8083:8083"
+    restart: always
+    depends_on:
+      - mongodb_container
+
+  mongodb_container:
+    container_name: mongodb_container
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: walletDB
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongodb_container:27017/
+
+  memchached:
+    container_name: memchached
+    image: memcached
+    restart: always
+
+volumes:
+  mongodb_data_container:
+
+networks:
+  default:
