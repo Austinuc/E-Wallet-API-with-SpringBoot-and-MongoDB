@@ -51,12 +51,10 @@ public class UserServicesImpl implements UserServices {
     public UserResponseDto signup(UserSignupDto userDto) {
 
         if (!app.validEmail(userDto.getEmail())) {
-            logger.debug("invalid signup email: {}", userDto.getEmail());
-            throw new ValidationException("Invalid email address");
+            throw new ValidationException("Invalid email address {"+userDto.getEmail()+"}");
         }
 
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            logger.debug("User already exist. email: {}",userDto.getEmail());
             throw new ValidationException("User with email: " + userDto.getEmail() + " already exists");
         }
 
@@ -68,7 +66,6 @@ public class UserServicesImpl implements UserServices {
         newUser.setStatus(Status.INACTIVE.name());
 
         newUser = userRepository.save(newUser);
-        logger.info("new user registered. email: {}",newUser.getEmail());
 
         sendToken(newUser.getEmail(), "Activate your account");
 
@@ -77,7 +74,8 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public String sendToken(String userEmail, String subject) {
-        logger.info("Sending verification token to: {}",userEmail);
+        if (!userRepository.existsByEmail(userEmail))
+            throw new ValidationException("User with email: " + userEmail + " does not exists");
 
         String token = app.generateSerialNumber("verify");
         memStorage.save(userEmail, token, 900); //expires in 15mins
@@ -105,7 +103,6 @@ public class UserServicesImpl implements UserServices {
         userToActivate.setStatus(Status.ACTIVE.name());
         UserResponseDto userResponseDto = app.getMapper().convertValue(userRepository.save(userToActivate), UserResponseDto.class);
 
-        logger.info("Setting up wallet for new user: {}",activateUserDto.getEmail());
         Wallet newWallet = Wallet.builder()
                 .walletUUID(app.generateSerialNumber("0"))
                 .balance(BigDecimal.ZERO)
@@ -114,7 +111,6 @@ public class UserServicesImpl implements UserServices {
 
         walletRepository.save(newWallet);
 
-        logger.info("Wallet created successfully for user: {}",activateUserDto.getEmail());
 
         MailDto mailDto = MailDto.builder()
                 .to(userToActivate.getEmail())
@@ -123,7 +119,6 @@ public class UserServicesImpl implements UserServices {
                 .build();
 
         mailSender.sendEmail(mailDto);
-        logger.info("Confirmation email sent to  {}", userResponseDto.getEmail());
 
         return userResponseDto;
     }
@@ -160,7 +155,6 @@ public class UserServicesImpl implements UserServices {
             return userResponseDto;
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new AuthenticationException(e.getMessage());
         }
     }
@@ -183,7 +177,6 @@ public class UserServicesImpl implements UserServices {
                 .build();
 
         mailSender.sendEmail(mailDto);
-        logger.info("Confirmation email sent to  {}", userToResetPassword.getEmail());
 
         return "password reset successful";
     }

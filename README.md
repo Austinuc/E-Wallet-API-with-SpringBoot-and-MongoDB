@@ -18,7 +18,14 @@ containerized with Docker, deployed on an AWS EC2 instance.`
     Memcached
     MongoDB
 
-### Installation
+### Launch services in a container
+* Ensure you have docker installed and running on the machine/server you want to run this service on
+* Simply download the [Docker compose file](https://github.com/Austinuc/E-Wallet-API-with-SpringBoot-and-MongoDB/blob/master/docker-compose.yml)
+* You can edit the file to your custom configurations
+* Then navigate to where the file is located on your terminal and run 'docker compose up'
+* Voilà! once the images downloads are completed and the application is running, you can then visit http://localhost:8083/swagger-ui/index.html to access the end points
+
+### Launch services locally
 
 * Ensure Memcached is installed and running on your machine before you run this service.
 * **Clone the repository:** git clone https://github.com/Austinuc/E-Wallet-API-with-SpringBoot-and-MongoDB.git
@@ -27,7 +34,7 @@ containerized with Docker, deployed on an AWS EC2 instance.`
 
 ### Usage
 The application exposes a RESTful API for creating and managing digital wallets. 
-Use the following link to see access the exposed API doc when the application is running on your local machine:
+Use the following link to access the exposed API doc when the application is running on your local machine:
 http://localhost:8083/swagger-ui/index.html
 
 ### Authentication and Authorization
