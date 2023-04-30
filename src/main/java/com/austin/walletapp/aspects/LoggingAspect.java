@@ -18,17 +18,16 @@ public class LoggingAspect {
 
     @Before("execution (* com.austin.walletapp.services.*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
-        logger.info(joinPoint.getSignature().getDeclaringTypeName() + " method started. [" +joinPoint.getTarget()+"]");
+        logger.info(joinPoint.getSignature().getName() + " method started. [" +joinPoint.getSignature().getDeclaringTypeName()+"]");
     }
 
     @AfterReturning("execution (* com.austin.walletapp.services.*.*(..))")
     public void logAfter(JoinPoint joinPoint) {
-
-        logger.info(joinPoint.getSignature().getName() + " procedure successfully executed. [" +joinPoint.getTarget()+"]");
+        logger.info(joinPoint.getSignature().getName() + " method successfully executed. [" +joinPoint.getSignature().getDeclaringTypeName()+"]");
     }
 
     @AfterReturning("execution (* com.austin.walletapp.repositories.*.save(..))")
     public void logEntityCreation(JoinPoint joinPoint) {
-        logger.info(joinPoint.getSignature().getName() + " method started. [" +joinPoint.getTarget()+"]");
+        logger.info(joinPoint.getSignature().getName() + " method started. [" +joinPoint.getSignature().getDeclaringTypeName()+"]");
     }
 }

@@ -8,7 +8,6 @@ containerized with Docker, deployed on an AWS EC2 instance.`
 
 ### Microservices components
 * BackendServices
-* FrontendServices
 
 ### Project Setup
     Language: Java

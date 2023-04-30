@@ -44,7 +44,7 @@ public class MemcachedConfig extends AbstractSSMConfiguration {
 
         } catch (NumberFormatException | IOException e) {
             e.printStackTrace();
-            logger.info("Memcached encountered an error : {}",e.getMessage());
+            logger.error("Memcached encountered an error : {}",e.getMessage());
         }
 
         return client;

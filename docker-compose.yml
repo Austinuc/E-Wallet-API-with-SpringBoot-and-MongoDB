@@ -10,7 +10,7 @@ services:
       MEMCACHED_SERVICE_HOST: memchached
       SPRING_MAIL_USERNAME: tobiajayi119@gmail.com #change the gmail sender here
       SPRING_MAIL_PASSWORD: pjwfdhxcngkcadgi #enter the password for the gmail sender
-      PAYSTACK_SECRETKEY: sk_test_0eee2028ee0d9b5f3fe44b2fb46b96088cbf3af0 #Enter your Paystack secrete key here
+      PAYSTACK_SECRETKEY: sk_test_21906934c3d53eabe4b72e6d52762f3776ac4281 #Enter your Paystack secrete key here
       APP_JWTSECRET: EWalletSecretKey #You can change this to anything you want
     ports:
       - "8083:8083"
