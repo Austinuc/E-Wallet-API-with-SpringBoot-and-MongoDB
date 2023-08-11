@@ -1,4 +1,5 @@
 package com.austin.walletapp.config;
+
 import com.google.code.ssm.Cache;
 import com.google.code.ssm.CacheFactory;
 import com.google.code.ssm.config.AbstractSSMConfiguration;
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration

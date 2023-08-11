@@ -50,6 +50,7 @@ public class JwtUtil {
                 .orElseThrow(() -> new ValidationException("error generating token"));
         Map<String, Object> claims = new HashMap<>();
         claims.put("uuid", user.getUuid());
+        claims.put("authorities", userDetails.getAuthorities().stream().map(Objects::toString).collect(Collectors.joining(" ")));
         return createToken(claims, userDetails.getUsername());
     }
 

@@ -1,6 +1,9 @@
 package com.austin.walletapp.dtos.requestDtos;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

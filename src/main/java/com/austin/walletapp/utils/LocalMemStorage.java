@@ -1,7 +1,5 @@
 package com.austin.walletapp.utils;
 
-import com.austin.walletapp.config.MemcachedConfig;
-import com.austin.walletapp.exceptions.ValidationException;
 import lombok.RequiredArgsConstructor;
 import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.exception.MemcachedException;
@@ -9,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.concurrent.TimeoutException;
 
 @Service

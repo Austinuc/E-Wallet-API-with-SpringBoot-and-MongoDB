@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +64,7 @@ public class UserServicesImpl implements UserServices {
         String userId = app.generateSerialNumber("usr");
         newUser.setUuid(userId);
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setRoles(Roles.USER.name());
+        newUser.setRoles(Roles.USER.getPermissions().stream().map(Objects::toString).collect(Collectors.joining(",")));
         newUser.setStatus(Status.INACTIVE.name());
 
         newUser = userRepository.save(newUser);
@@ -98,7 +100,6 @@ public class UserServicesImpl implements UserServices {
 
         User userToActivate = userRepository.findByEmail(activateUserDto.getEmail())
                 .orElseThrow(() -> new NotFoundException("User not found"));
-
 
         userToActivate.setStatus(Status.ACTIVE.name());
         UserResponseDto userResponseDto = app.getMapper().convertValue(userRepository.save(userToActivate), UserResponseDto.class);

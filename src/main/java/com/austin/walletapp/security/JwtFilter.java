@@ -1,7 +1,5 @@
 package com.austin.walletapp.security;
 
-import com.austin.walletapp.utils.LocalMemStorage;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,6 +1,5 @@
 package com.austin.walletapp.controllers.RestControllers;
 
-import com.austin.walletapp.dtos.paystack.InitiateTransactionDto;
 import com.austin.walletapp.dtos.requestDtos.ChangePasswordDto;
 import com.austin.walletapp.dtos.responseDtos.ApiResponse;
 import com.austin.walletapp.dtos.responseDtos.UserResponseDto;
@@ -8,13 +7,8 @@ import com.austin.walletapp.exceptions.AuthenticationException;
 import com.austin.walletapp.services.UserServices;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequiredArgsConstructor
