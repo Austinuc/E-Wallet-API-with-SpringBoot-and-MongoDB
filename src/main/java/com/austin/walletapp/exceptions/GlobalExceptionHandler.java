@@ -61,4 +61,12 @@ public class GlobalExceptionHandler {
         return  new ApiResponse<>("Error: "+ ex.getMessage(), false,null);
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ApiResponse<String> handleException(Exception ex){
+        logger.error(ex.getMessage());
+        return  new ApiResponse<>("Error: "+ ex.getMessage(), false,null);
+    }
+
 }

@@ -26,9 +26,10 @@ public class AuthController {
                     "Copy the code from you email and enter it in the 'activate-account end point'.\n" +
                     "If no code was sent to you, then use the 'resend-token' end point to resend a new activation code")
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody UserSignupDto userSignupDto) {
-
-        return ResponseEntity.ok().body(new ApiResponse<>("User signup successful",true, userServices.signup(userSignupDto)));
+    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody @Valid UserSignupDto userSignupDto) {
+        System.out.println("Creating user: " + userSignupDto);
+        UserResponseDto userResponseDto = userServices.signup(userSignupDto);
+        return ResponseEntity.ok().body(new ApiResponse<>("User signup successful",true, userResponseDto));
     }
 
     @Operation(summary = "Activates a newly created account or an inactive account",
@@ -36,7 +37,8 @@ public class AuthController {
                 "Ensure that you enter the complete verification code sent to your email, it starts with 'verify...'")
     @PostMapping("/activate-account")
     public ResponseEntity<ApiResponse<UserResponseDto>> activateUser(@RequestBody ActivateUserDto activateUserDto) {
-        return ResponseEntity.ok(new ApiResponse<>("User activated!",true, userServices.activateUser(activateUserDto)));
+        UserResponseDto userResponseDto = userServices.activateUser(activateUserDto);
+        return ResponseEntity.ok(new ApiResponse<>("User activated!",true, userResponseDto));
     }
 
     @Operation(summary = "Generates a JWT token upon successful login that will be used for Authorizations",
@@ -44,21 +46,23 @@ public class AuthController {
                 "there's a single space after the 'Bearer ' string. Don't forget to include it.")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserResponseDto>> loginUser(@RequestBody UserLoginDto userLoginDto) {
-
-        return ResponseEntity.ok(new ApiResponse<>("User logged in successfully!",true, userServices.login(userLoginDto)));
+        UserResponseDto userResponseDto = userServices.login(userLoginDto);
+        return ResponseEntity.ok(new ApiResponse<>("User logged in successfully!",true, userResponseDto));
     }
 
     @Operation(summary = "Resend account activation token or password reset token")
     @PostMapping("/resend-token")
     public ResponseEntity<ApiResponse<String>> resendToken(@Valid @RequestParam String email, @Valid @RequestParam String reason) {
-        return ResponseEntity.ok(new ApiResponse<>(userServices.sendToken(email, reason),true, email));
+        String token = userServices.sendToken(email, reason);
+        return ResponseEntity.ok(new ApiResponse<>(token,true, email));
     }
 
     @Operation(summary = "Resets a password after a reset token has been confirmed",
             description = "Before using this endpoint, ensure the forgot password token has been activated")
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiResponse<String>> forgotPassword(@RequestBody ChangePasswordDto changePasswordDto) {
-        return ResponseEntity.ok(new ApiResponse<>(userServices.resetPassword(changePasswordDto),true, null));
+        String message = userServices.resetPassword(changePasswordDto);
+        return ResponseEntity.ok(new ApiResponse<>(message,true, null));
     }
 
 }
